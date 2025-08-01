@@ -1,7 +1,11 @@
 package main.alura.com.coinfluxcraft;
 
 import com.google.gson.JsonObject;
+import main.alura.com.coinfluxcraft.config.ApiConfig;
+import main.alura.com.coinfluxcraft.util.ApiClient;
 import main.alura.com.coinfluxcraft.util.JsonParserUtil;
+
+import java.io.IOException;
 
 /**
  * CoinFluxCraft - Currency Converter Application
@@ -22,5 +26,15 @@ public class Main {
         JsonObject obj = JsonParserUtil.parseStringToJson(sampleJson);
         double rate = JsonParserUtil.getExchangeRate(obj);
         System.out.println("Test rate: " + rate);
+
+        // Test API Client
+        try {
+//            System.out.println("API Key masked: " + ApiConfig.getApiKeyMasked());
+            String url = ApiConfig.buildUrl() + "/latest/USD";
+            String jsonResponse = ApiClient.sendGetRequest(url);
+            System.out.println("API Response: " + jsonResponse);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error calling API: " + e.getMessage());
+        }
     }
 }
